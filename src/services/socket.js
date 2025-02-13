@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 
 const socket = io('https://hospital-backend-vmq5.onrender.com', {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://hospital-frontend-tan.vercel.app",
         methods: ["GET", "POST"]
     }
 });
