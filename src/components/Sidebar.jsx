@@ -211,37 +211,6 @@ const Sidebar = () => {
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="bg-white border-t border-gray-200 fixed bottom-0 right-0 left-0 z-10">
-          <div className="container mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
-            {/* Left Section - Branding & Copyright */}
-            <div className="text-center md:text-left">
-              <p className="text-xs text-gray-500">© 2024 Medical Management System. All rights reserved.</p>
-              <p className="text-xs text-gray-400">
-                Made with ❤️ by <a href="https://Marbaledekhoo.com" className="text-blue-500 hover:underline"></a>
-              </p>
-            </div>
-
-            {/* Middle Section - Navigation Links */}
-            <div className="flex space-x-4 text-gray-500 text-xs">
-              <a href="/faq" className="hover:text-blue-600 transition">FAQ</a>
-              <a href="/privacy" className="hover:text-blue-600 transition">Privacy Policy</a>
-            </div>
-
-            {/* Social Icons */}
-            <div className="flex space-x-3">
-              <a href="https://facebook.com" target="_blank" className="text-gray-500 hover:text-blue-600 transition">
-                <i className="fab fa-facebook-f text-sm"></i>
-              </a>
-              <a href="https://twitter.com" target="_blank" className="text-gray-500 hover:text-blue-600 transition">
-                <i className="fab fa-twitter text-sm"></i>
-              </a>
-              <a href="https://linkedin.com" target="_blank" className="text-gray-500 hover:text-blue-600 transition">
-                <i className="fab fa-linkedin-in text-sm"></i>
-              </a>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );

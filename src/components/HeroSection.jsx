@@ -85,74 +85,63 @@ export const HeroSection = () => {
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Hero Banner with Enhanced Gradient */}
-      <div className="relative w-full h-[100vh] overflow-hidden">
-        {/* Advanced Gradient Background */}
+      {/* Hero Banner */}
+      <div className="relative w-full h-screen overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-600 via-blue-500 to-purple-600">
-          {/* Enhanced Pattern Overlay */}
           <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAzNGM0LjQxOCAwIDgtMy41ODIgOC04cy0zLjU4Mi04LTgtOC04IDMuNTgyLTggOCAzLjU4MiA4IDggOHoiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+')] mix-blend-overlay" />
-          {/* Animated Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-purple-600/20 animate-pulse" />
         </div>
 
-        {/* Content */}
+        {/* Content Section */}
         <div className="relative flex items-center justify-center h-full px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-5xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 tracking-tight">
               Hospital Management System
-              <span className="block text-lg sm:text-xl font-normal mt-3 text-blue-100">
+              <span className="block text-base sm:text-lg font-normal mt-2 sm:mt-3 text-blue-100">
                 Streamlining Healthcare Operations
               </span>
             </h1>
 
-            {/* Enhanced Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
-              {/* Medicine Stats */}
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto mt-8 sm:mt-12">
               <StatCard
-                icon={<BeakerIcon className="h-8 w-8 text-blue-600" />}
+                icon={<BeakerIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />}
                 value={totalMedicines}
                 label="Medicines"
                 trend="12% increase"
                 trendIcon={<ArrowTrendingUpIcon className="h-4 w-4" />}
-                bgColor="bg-white/10"
               />
 
-              {/* Doctors Stats */}
               <StatCard
-                icon={<UsersIcon className="h-8 w-8 text-purple-600" />}
+                icon={<UsersIcon className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />}
                 value={totalDoctors}
                 label="Doctors"
                 trend="8 new this month"
                 trendIcon={<UserPlusIcon className="h-4 w-4" />}
-                bgColor="bg-white/10"
               />
 
-              {/* Prescriptions Stats */}
               <StatCard
-                icon={<DocumentTextIcon className="h-8 w-8 text-indigo-600" />}
+                icon={<DocumentTextIcon className="h-6 w-6 sm:h-8 sm:w-8 text-indigo-600" />}
                 value={totalPrescriptions}
                 label="Prescriptions"
                 trend="24 today"
                 trendIcon={<ArrowTrendingUpIcon className="h-4 w-4" />}
-                bgColor="bg-white/10"
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Enhanced Charts Section */}
-      <div className="mt-32">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10 pb-12">
+      {/* Charts Section */}
+      <div className="py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Monthly Prescriptions Chart */}
             <ChartCard
               title="Monthly Prescriptions"
               icon={<ChartBarIcon className="h-5 w-5 text-blue-600" />}
               chart={<Line data={monthlyStats} options={lineChartOptions} />}
             />
 
-            {/* Specialization Distribution Chart */}
             <ChartCard
               title="Specialization Distribution"
               icon={<UsersIcon className="h-5 w-5 text-purple-600" />}
@@ -164,20 +153,20 @@ export const HeroSection = () => {
     </div>
   );
 };
-// Enhanced Stat Card Component with Improved Animations
-const StatCard = ({ icon, value, label, trend, trendIcon, bgColor }) => (
-  <div className="transform hover:scale-105 transition-all duration-300 ease-out">
-    <div className={`${bgColor} backdrop-blur-lg p-6 rounded-2xl shadow-xl border border-white/20 hover:border-white/30 transition-all duration-300`}>
-      <div className="flex flex-col items-center">
-        <div className="p-4 bg-white/20 rounded-full mb-4 transform hover:rotate-3 transition-transform duration-300">{icon}</div>
-        <span className="text-3xl font-bold text-white mb-2 relative">
+
+// Stat Card Component
+const StatCard = ({ icon, value, label, trend, trendIcon }) => (
+  <div className="transform hover:scale-[1.02] transition-transform duration-300 ease-out">
+    <div className="bg-white/10 backdrop-blur-lg p-4 sm:p-6 rounded-xl shadow-lg border border-white/20">
+      <div className="flex flex-col items-center space-y-2 sm:space-y-3">
+        <div className="p-2 sm:p-3 bg-white/20 rounded-full">{icon}</div>
+        <span className="text-2xl sm:text-3xl font-bold text-white">
           <CountUp end={value} duration={2.5} separator="," />
-          <div className="absolute -inset-1 bg-white/5 blur-sm rounded-lg -z-10" />
         </span>
-        <span className="text-sm font-medium text-white uppercase tracking-wide">
+        <span className="text-xs sm:text-sm font-medium text-white/90 uppercase tracking-wide">
           {label}
         </span>
-        <div className="mt-4 flex items-center text-emerald-300 transition-colors duration-300 hover:text-emerald-200">
+        <div className="flex items-center text-emerald-300 text-xs sm:text-sm">
           {trendIcon}
           <span className="ml-1">{trend}</span>
         </div>
@@ -185,48 +174,48 @@ const StatCard = ({ icon, value, label, trend, trendIcon, bgColor }) => (
     </div>
   </div>
 );
-// PropTypes definitions
+
 StatCard.propTypes = {
   icon: PropTypes.node.isRequired,
   value: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   trend: PropTypes.string.isRequired,
   trendIcon: PropTypes.node.isRequired,
-  bgColor: PropTypes.string.isRequired,
 };
-// Enhanced Chart Card Component
+
+// Chart Card Component
 const ChartCard = ({ title, icon, chart }) => (
-  <div className="bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 hover:border-white/30">
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+  <div className="bg-white/95 backdrop-blur-lg p-4 sm:p-6 rounded-xl shadow-lg border border-white/20">
+    <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
         {icon}
         <span className="ml-2">{title}</span>
       </h2>
-      {title === "Monthly Prescriptions" && (
-        <select className="text-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-white/50 backdrop-blur-sm transition-colors duration-200 hover:bg-white/70">
-          <option>Last 6 months</option>
-          <option>Last year</option>
-          <option>All time</option>
-        </select>
-      )}
-      {title === "Specialization Distribution" && (
-        <button className="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200">
-          <AdjustmentsHorizontalIcon className="h-5 w-5" />
+      <div className="flex items-center space-x-2">
+        {title === "Monthly Prescriptions" && (
+          <select className="text-xs sm:text-sm border-gray-200 rounded-lg focus:ring-blue-500 bg-white/50 px-2 py-1">
+            <option>Last 6 months</option>
+            <option>Last year</option>
+          </select>
+        )}
+        <button className="p-1.5 hover:bg-gray-50 rounded-lg">
+          <AdjustmentsHorizontalIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
         </button>
-      )}
+      </div>
     </div>
-    <div className="h-64 relative group">
+    <div className="h-56 sm:h-64 relative">
       {chart}
-      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none" />
     </div>
   </div>
 );
+
 ChartCard.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
   chart: PropTypes.node.isRequired,
 };
-// Enhanced Chart Options
+
+// Chart Options
 const lineChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -245,45 +234,22 @@ const lineChartOptions = {
   scales: {
     y: {
       beginAtZero: true,
-      grid: {
-        color: "rgba(0, 0, 0, 0.05)",
-        borderColor: 'transparent',
-      },
-      ticks: {
-        padding: 8,
-      },
-      border: {
-        display: false
-      }
+      grid: { color: "rgba(0, 0, 0, 0.05)", borderColor: 'transparent' },
+      ticks: { padding: 8 },
+      border: { display: false }
     },
     x: {
-      grid: {
-        display: false,
-        borderColor: 'transparent',
-      },
-      ticks: {
-        padding: 8,
-      },
-      border: {
-        display: false
-      }
+      grid: { display: false, borderColor: 'transparent' },
+      ticks: { padding: 8 },
+      border: { display: false }
     },
-  },
-  interaction: {
-    intersect: false,
-    mode: 'index',
   },
   elements: {
-    line: {
-      tension: 0.4,
-    },
-    point: {
-      radius: 4,
-      borderWidth: 2,
-      backgroundColor: 'white',
-    },
+    line: { tension: 0.4 },
+    point: { radius: 4, borderWidth: 2, backgroundColor: 'white' },
   },
 };
+
 const doughnutChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -293,9 +259,7 @@ const doughnutChartOptions = {
       labels: {
         usePointStyle: true,
         padding: 20,
-        font: {
-          size: 12,
-        },
+        font: { size: 12 },
       },
     },
     tooltip: {
@@ -309,10 +273,7 @@ const doughnutChartOptions = {
     }
   },
   cutout: '70%',
-  animation: {
-    animateScale: true,
-    animateRotate: true
-  },
-
+  animation: { animateScale: true, animateRotate: true },
 };
+
 export default HeroSection;
