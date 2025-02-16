@@ -1,11 +1,21 @@
 // src/context/AuthContext.js
-
-import React from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import { io } from "socket.io-client";
-import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext({});
-const socket = io("https://hospital-backend-vmq5.onrender.com");
+
+// Get the socket URL based on environment
+const SOCKET_URL = import.meta.env.VITE_NODE_ENV === 'production'
+    ? 'https://hospital-backend-vmq5.onrender.com'
+    : 'http://localhost:5000';
+
+// Configure socket with proper options
+const socket = io(SOCKET_URL, {
+    withCredentials: true,
+    transports: ['websocket', 'polling'],
+    autoConnect: true
+});
+
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState({
         user: null,
@@ -19,12 +29,25 @@ export const AuthProvider = ({ children }) => {
         const user = localStorage.getItem('user');
         
         if (token && user) {
+            const userData = JSON.parse(user);
             setAuth({
-                user: JSON.parse(user),
+                user: userData,
                 token,
                 isAuthenticated: true,
             });
+
+            // Connect socket with user data
+            socket.connect();
+            socket.emit('join_chat', {
+                userId: userData._id,
+                username: userData.name || userData.email
+            });
         }
+
+        // Cleanup on unmount
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     const login = (userData, token) => {
@@ -35,12 +58,23 @@ export const AuthProvider = ({ children }) => {
             token,
             isAuthenticated: true,
         });
+
+        // Connect socket after successful login
+        socket.connect();
+        socket.emit('join_chat', {
+            userId: userData._id,
+            username: userData.name || userData.email
+        });
     };
 
     const logout = () => {
+        // Notify server before clearing data
+        socket.emit("logout");
+        socket.disconnect();
+
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        socket.emit("logout"); // Notify server on logout
+
         setAuth({
             user: null,
             token: null,
@@ -49,7 +83,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ ...auth, login, logout }}>
+        <AuthContext.Provider value={{ ...auth, login, logout, socket }}>
             {children}
         </AuthContext.Provider>
     );

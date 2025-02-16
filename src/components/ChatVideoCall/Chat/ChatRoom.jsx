@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import socket from "../../../services/socket";
 import axios from "axios";
 import { FaPaperPlane, FaUser } from "react-icons/fa"; // Import icons
+import { API_BASE_URL } from "../../../services/api"; // Import the API_BASE_URL
 
 const ChatRoom = () => {
     const [message, setMessage] = useState("");
@@ -19,7 +20,8 @@ const ChatRoom = () => {
                     return;
                 }
 
-                const response = await axios.get("https://hospital-backend-vmq5.onrender.com/api/auth/me", {
+                // Use the API_BASE_URL from api.js
+                const response = await axios.get(`${API_BASE_URL}/api/auth/me`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
@@ -43,16 +45,20 @@ const ChatRoom = () => {
             setMessages((prev) => [...prev, data]);
         };
 
-        socket.on("receive_message", handleReceiveMessage);
-        socket.on("user_list", (userList) => {
+        const handleUserListUpdate = (userList) => {
             setUsers(userList);
-        });
+        };
 
+        socket.on("receive_message", handleReceiveMessage);
+        socket.on("user_list", handleUserListUpdate);
+
+        // Cleanup on component unmount
         return () => {
             socket.off("receive_message", handleReceiveMessage);
-            socket.off("user_list");
+            socket.off("user_list", handleUserListUpdate);
+            socket.emit("logout", { userId, username }); // Notify server that user is leaving
         };
-    }, []);
+    }, [userId, username]);
 
     const sendMessage = () => {
         if (message.trim() === "") return;
@@ -72,8 +78,12 @@ const ChatRoom = () => {
                 <ul>
                     {users.map((user, index) => (
                         <li key={index} className="py-2 flex items-center">
-                            <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                            {user}
+                            <span
+                                className={`w-2 h-2 rounded-full mr-2 ${
+                                    user.isOnline ? "bg-green-500" : "bg-red-500"
+                                }`}
+                            ></span>
+                            {user.username}
                         </li>
                     ))}
                 </ul>
@@ -124,4 +134,3 @@ const ChatRoom = () => {
 };
 
 export default ChatRoom;
-

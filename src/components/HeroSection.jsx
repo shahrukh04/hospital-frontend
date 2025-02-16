@@ -23,7 +23,6 @@ import {
   ArcElement,
 } from "chart.js";
 import { api } from "../services/api";
-
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -35,7 +34,6 @@ ChartJS.register(
   Legend,
   ArcElement
 );
-
 export const HeroSection = () => {
   const [totalMedicines, setTotalMedicines] = useState(0);
   const [totalDoctors, setTotalDoctors] = useState(0);
@@ -48,7 +46,6 @@ export const HeroSection = () => {
     labels: [],
     datasets: [],
   });
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,12 +63,10 @@ export const HeroSection = () => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
     fetchMonthlyStats();
     fetchDistributionData();
   }, []);
-
   const fetchMonthlyStats = async () => {
     try {
       const response = await api.getMonthlyStats();
@@ -80,7 +75,6 @@ export const HeroSection = () => {
       console.error("Failed to fetch monthly stats:", error);
     }
   };
-
   const fetchDistributionData = async () => {
     try {
       const response = await api.getDistributionData();
@@ -89,7 +83,6 @@ export const HeroSection = () => {
       console.error("Failed to fetch distribution data:", error);
     }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Hero Banner with Enhanced Gradient */}
@@ -171,7 +164,6 @@ export const HeroSection = () => {
     </div>
   );
 };
-
 // Enhanced Stat Card Component with Improved Animations
 const StatCard = ({ icon, value, label, trend, trendIcon, bgColor }) => (
   <div className="transform hover:scale-105 transition-all duration-300 ease-out">
@@ -193,7 +185,6 @@ const StatCard = ({ icon, value, label, trend, trendIcon, bgColor }) => (
     </div>
   </div>
 );
-
 // PropTypes definitions
 StatCard.propTypes = {
   icon: PropTypes.node.isRequired,
@@ -203,7 +194,6 @@ StatCard.propTypes = {
   trendIcon: PropTypes.node.isRequired,
   bgColor: PropTypes.string.isRequired,
 };
-
 // Enhanced Chart Card Component
 const ChartCard = ({ title, icon, chart }) => (
   <div className="bg-white/95 backdrop-blur-lg p-6 rounded-xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 hover:border-white/30">
@@ -231,13 +221,11 @@ const ChartCard = ({ title, icon, chart }) => (
     </div>
   </div>
 );
-
 ChartCard.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
   chart: PropTypes.node.isRequired,
 };
-
 // Enhanced Chart Options
 const lineChartOptions = {
   responsive: true,
@@ -296,7 +284,6 @@ const lineChartOptions = {
     },
   },
 };
-
 const doughnutChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -326,6 +313,6 @@ const doughnutChartOptions = {
     animateScale: true,
     animateRotate: true
   },
-};
 
+};
 export default HeroSection;

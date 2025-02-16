@@ -1,33 +1,29 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/api"; // Import the loginUser function from api.js
 
 const Login = ({ closeModal, switchToRegister }) => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: "", password: "" });
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+
         try {
-            const response = await fetch("https://hospital-backend-vmq5.onrender.com/api/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+            const response = await loginUser(formData);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                login(data.user, data.token);
+            if (response.data) { // axios wraps the response in .data
+                login(response.data.user, response.data.token);
                 navigate("/Sidebar/dashboard");
                 closeModal();
-            } else {
-                console.error(data.message);
             }
         } catch (error) {
             console.error("Login error:", error);
+            setError(error.response?.data?.message || "Failed to login. Please try again.");
         }
     };
 
