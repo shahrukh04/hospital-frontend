@@ -197,8 +197,8 @@ const Sidebar = () => {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto pt-16 pb-16">
-          <div className="p-6">
+        <main className="flex-1 overflow-auto pt-16">
+          <div className="p-2">
             {/* Routes Content */}
             <Routes>
               <Route path="dashboard" element={<Dashboard />} />
