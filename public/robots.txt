@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hospital-frontend-tan.vercel.app/sitemap.xml
