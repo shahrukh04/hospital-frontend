@@ -23,6 +23,7 @@ import {
   ArcElement,
 } from "chart.js";
 import { api } from "../services/api";
+import AdComponent from "./AdComponent";
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -206,6 +207,7 @@ const ChartCard = ({ title, icon, chart }) => (
     <div className="h-56 sm:h-64 relative">
       {chart}
     </div>
+<AdComponent/>
   </div>
 );
 

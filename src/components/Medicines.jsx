@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../services/api";
 import Swal from "sweetalert2";
+
 import {
   PlusIcon,
   PencilSquareIcon,
@@ -24,6 +25,7 @@ import {
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import AdComponent from "./AdComponent";
 const Medicines = () => {
   const [medicines, setMedicines] = useState([]);
   const [newMedicine, setNewMedicine] = useState({
@@ -653,6 +655,7 @@ const Medicines = () => {
         {editingMedicine ? "Update Medicine" : "Add Medicine"}
       </button>
     </div>
+<AdComponent/>
   </form>
 </div>
  

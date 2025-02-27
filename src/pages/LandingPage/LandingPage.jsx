@@ -6,7 +6,7 @@ import Services from "../../components/Services";
 import Testimonials from "../../components/Testimonials";
 import Contact from "../../components/Contact";
 import Footer from "../../components/Footer";
-import AdComponent from "../../components/AdComponent";  // Import Ad Component
+  // Import Ad Component
 
 const LandingPage = () => {
   const [userId, setUserId] = useState(null);
@@ -17,13 +17,12 @@ const LandingPage = () => {
       <Hero />
 
       {/* Google AdSense Ad Below Hero Section */}
-      <AdComponent />
+
 
       <Services />
       <Testimonials />
 
-      {/* Another Ad After Testimonials */}
-      <AdComponent />
+
 
       <Contact />
       <AboutUs />

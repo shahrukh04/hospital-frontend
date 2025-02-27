@@ -25,6 +25,7 @@ import {
   FaInfoCircle,
   FaClock,
 } from "react-icons/fa";
+import AdComponent from "./AdComponent";
  
 const PrescriptionList = () => {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -403,6 +404,7 @@ const PrescriptionList = () => {
           </div>
         )}
       </div>
+<AdComponent/>
     </div>
   );
 };
