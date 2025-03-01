@@ -89,6 +89,7 @@ const Medicines = () => {
   const loadMedicines = async () => {
     try {
       const response = await api.getAllMedicines();
+console.log(response.data);
       setMedicines(response.data);
     } catch (error) {
       console.error("Error loading medicines:", error);
