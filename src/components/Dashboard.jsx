@@ -6,6 +6,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import ErrorAlert from "./ErrorAlert";
 import { createAuthenticatedAPI, API_BASE_URL } from "../services/api";
 
+
 const Dashboard = () => {
   const { user, token } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -70,8 +71,8 @@ const Dashboard = () => {
           fetchData(`${API_BASE_URL}/api/doctors/count`),
           fetchData(`${API_BASE_URL}/api/prescriptions/count`),
           fetchData(`${API_BASE_URL}/api/patients/count`),
-          fetchData(`${API_BASE_URL}/api/beds/count`),
-          fetchData(`${API_BASE_URL}/api/beds/occupied`),
+          fetchData(`${API_BASE_URL}/api/beds/stats/total`),
+          fetchData(`${API_BASE_URL}/api/beds/stats/occupied`),
           fetchData(`${API_BASE_URL}/api/medicines/low-stock`),
           fetchData(`${API_BASE_URL}/api/stats/monthly`),
           fetchData(`${API_BASE_URL}/api/stats/distribution`),
