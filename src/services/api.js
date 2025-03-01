@@ -102,6 +102,7 @@ export const api = {
   getAppointmentsByDoctor: (doctorId) => axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`),
   getAppointmentsByPatient: (patientId) => axios.get(`${BASE_URL}/appointments/patient/${patientId}`),
   getTodaysAppointments: () => axios.get(`${BASE_URL}/appointments/today`),
+  getUpcomingAppointments: () => axios.get(`${BASE_URL}/appointments/upcoming`),
   rescheduleAppointment: (id, newDate, newTime) =>
   axios.put(`${BASE_URL}/appointments/${id}/reschedule`, { date: newDate, time: newTime }),
 

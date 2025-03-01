@@ -25,7 +25,9 @@ const Dashboard = () => {
     bedOccupancyData: [],
     financialData: [],
     criticalPatients: [],
+    todayAppointments: [],
     upcomingAppointments: [],
+    totalAppointments: [],
     emergencyAlerts: []
   });
 
@@ -64,7 +66,9 @@ const Dashboard = () => {
           bedOccupancyDataRes,
           financialDataRes,
           criticalPatientsRes,
-          upcomingAppointmentsRes,
+          todayAppointmentsRes,    // Renamed to make it clear
+    upcomingAppointmentsRes,
+    totalAppointmentsRes,
           emergencyAlertsRes
         ] = await Promise.all([
           fetchData(`${API_BASE_URL}/api/medicines/count`),
@@ -81,6 +85,9 @@ const Dashboard = () => {
           fetchData(`${API_BASE_URL}/api/stats/financial`),
           fetchData(`${API_BASE_URL}/api/patients/critical`),
           fetchData(`${API_BASE_URL}/api/appointments/today`),
+          fetchData(`${API_BASE_URL}/api/appointments/upcoming`),
+          fetchData(`${API_BASE_URL}/api/appointments`),
+
           fetchData(`${API_BASE_URL}/api/emergency/alerts`)
         ]);
 
@@ -99,6 +106,8 @@ const Dashboard = () => {
           financialData: Array.isArray(financialDataRes) ? financialDataRes : [],
           criticalPatients: Array.isArray(criticalPatientsRes) ? criticalPatientsRes : [],
           upcomingAppointments: Array.isArray(upcomingAppointmentsRes) ? upcomingAppointmentsRes : [],
+          todayAppointments: Array.isArray(todayAppointmentsRes) ? todayAppointmentsRes : [],
+          totalAppointments: Array.isArray(totalAppointmentsRes) ? totalAppointmentsRes : [],
           emergencyAlerts: Array.isArray(emergencyAlertsRes) ? emergencyAlertsRes : [],
       });
 
@@ -266,48 +275,137 @@ const Dashboard = () => {
             )}
           </section>
 
-          {/* Upcoming Appointments Section */}
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Today's Appointments</h2>
-            {dashboardData.upcomingAppointments.length > 0 ? (
-              <div className="bg-white rounded-lg shadow overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+         {/* Today's Appointments Section */}
+<section className="mb-8">
+    <h2 className="text-xl font-semibold mb-4 text-gray-800">Today's Appointments</h2>
+    {dashboardData.todayAppointments.length > 0 ? (
+        <div className="bg-white rounded-lg shadow overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Patient</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Doctor</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Patient</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Doctor</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {dashboardData.upcomingAppointments.map(appointment => (
-                      <tr key={appointment.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.time}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.patient}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.department}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
-                          appointment.status.toLowerCase() === 'completed'
-                            ? 'text-green-600'
-                            : appointment.status.toLowerCase() === 'pending'
-                            ? 'text-yellow-600'
-                            : 'text-blue-600'
-                        }`}>
-                          {appointment.status}
-                        </td>
-                      </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {dashboardData.todayAppointments.map(appointment => (
+                        <tr key={appointment.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.time}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.patient}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.department}</td>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
+                                appointment.status.toLowerCase() === 'completed'
+                                    ? 'text-green-600'
+                                    : appointment.status.toLowerCase() === 'pending'
+                                    ? 'text-yellow-600'
+                                    : 'text-blue-600'
+                            }`}>
+                                {appointment.status}
+                            </td>
+                        </tr>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="bg-white p-6 rounded-lg shadow-sm text-center text-gray-500">
-                No appointments scheduled for today.
-              </div>
-            )}
-          </section>
+                </tbody>
+            </table>
+        </div>
+    ) : (
+        <div className="bg-white p-6 rounded-lg shadow-sm text-center text-gray-500">
+            No appointments scheduled for today.
+        </div>
+    )}
+</section>
+
+{/* Total Appointments Section */}
+<section className="mb-8">
+    <h2 className="text-xl font-semibold mb-4 text-gray-800">All Appointments</h2>
+    {dashboardData.totalAppointments.length > 0 ? (
+        <div className="bg-white rounded-lg shadow overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Patient</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Doctor</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {dashboardData.totalAppointments.map(appointment => (
+                        <tr key={appointment.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.date}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.time}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.patient}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.department}</td>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
+                                appointment.status.toLowerCase() === 'completed'
+                                    ? 'text-green-600'
+                                    : appointment.status.toLowerCase() === 'pending'
+                                    ? 'text-yellow-600'
+                                    : 'text-blue-600'
+                            }`}>
+                                {appointment.status}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    ) : (
+        <div className="bg-white p-6 rounded-lg shadow-sm text-center text-gray-500">
+            No appointments found.
+        </div>
+    )}
+</section>
+
+{/* Existing Upcoming Appointments Section (Keep this if needed) */}
+<section className="mb-8">
+    <h2 className="text-xl font-semibold mb-4 text-gray-800">Upcoming Appointments</h2>
+    {dashboardData.upcomingAppointments.length > 0 ? (
+        <div className="bg-white rounded-lg shadow overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Patient</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Doctor</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {dashboardData.upcomingAppointments.map(appointment => (
+                        <tr key={appointment.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.time}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.patient}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.doctor}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{appointment.department}</td>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
+                                appointment.status.toLowerCase() === 'completed'
+                                    ? 'text-green-600'
+                                    : appointment.status.toLowerCase() === 'pending'
+                                    ? 'text-yellow-600'
+                                    : 'text-blue-600'
+                            }`}>
+                                {appointment.status}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    ) : (
+        <div className="bg-white p-6 rounded-lg shadow-sm text-center text-gray-500">
+            No upcoming appointments.
+        </div>
+    )}
+</section>
+
 
           {/* Emergency Alerts Section */}
           {dashboardData.emergencyAlerts.length > 0 && (
