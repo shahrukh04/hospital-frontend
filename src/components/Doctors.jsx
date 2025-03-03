@@ -25,7 +25,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { api } from "../services/api"; // Import your existing API functions
-// import AdComponent from "./AdComponent";
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -649,8 +648,7 @@ const Doctors = () => {
                   </Form>
                 )}
               </Formik>
-{/* <AdComponent/>
- */}
+
             </div>
           </div>
         </div>

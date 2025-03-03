@@ -25,7 +25,6 @@ import {
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import AdComponent from "./AdComponent";
 const Medicines = () => {
   const [medicines, setMedicines] = useState([]);
   const [newMedicine, setNewMedicine] = useState({
@@ -656,7 +655,6 @@ console.log(response.data);
         {editingMedicine ? "Update Medicine" : "Add Medicine"}
       </button>
     </div>
-<AdComponent/>
   </form>
 </div>
  

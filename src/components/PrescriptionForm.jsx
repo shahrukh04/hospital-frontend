@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../services/api";
 import { toast } from 'react-toastify';
-import AdComponent from "./AdComponent";
 
 const PrescriptionForm = () => {
   const [doctors, setDoctors] = useState([]);
@@ -346,7 +345,6 @@ const PrescriptionForm = () => {
                 Create Prescription
               </button>
             </div>
-<AdComponent/>
           </form>
         </div>
       </div>

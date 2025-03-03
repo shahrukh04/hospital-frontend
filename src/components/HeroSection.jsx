@@ -19,7 +19,6 @@ import {
   BellAlertIcon,
   ArrowTrendingUpIcon
 } from "@heroicons/react/24/outline";
-import AdComponent from "./AdComponent";
 import EmergencyAlerts from "./EmergencyAlerts";
 import UpcomingAppointments from "./UpcomingAppointments";
 
@@ -470,7 +469,6 @@ const HeroSection = ({
       )}
 
       {/* Advertisement Component - Can be positioned strategically based on requirements */}
-      <AdComponent/>
     </div>
   );
 };

@@ -109,13 +109,13 @@ const Sidebar = () => {
             <PlusCircleIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Create Prescription</span>}
           </Link>
-          <Link
+          {/* <Link
             to="/Sidebar/Chat"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
             <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat</span>}
-          </Link>
+          </Link> */}
           <Link
             to="/Sidebar/ChatRoom"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
@@ -123,13 +123,7 @@ const Sidebar = () => {
             <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat Room</span>}
           </Link>
-          <Link
-            to="/Sidebar/VideoCall"
-            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
-          >
-            <VideoCameraIcon className="h-5 w-5 text-indigo-500" />
-            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Video Call</span>}
-          </Link>
+
 
           <button
             onClick={handleLogout}
