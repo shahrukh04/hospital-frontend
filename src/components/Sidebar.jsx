@@ -22,6 +22,7 @@ import Medicines from "./Medicines";
 import Doctors from "./Doctors";
 import PrescriptionList from "./PrescriptionList";
 import PrescriptionForm from "./PrescriptionForm";
+import Appointment from "../Admin/Appointment";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -108,6 +109,13 @@ const Sidebar = () => {
           >
             <PlusCircleIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Create Prescription</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Appointment"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <PlusCircleIcon className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Appointment</span>}
           </Link>
           {/* <Link
             to="/Sidebar/Chat"
@@ -199,6 +207,7 @@ const Sidebar = () => {
               <Route path="medicines" element={<Medicines />} />
               <Route path="doctors" element={<Doctors />} />
               <Route path="PrescriptionList" element={<PrescriptionList />} />
+              <Route path="Appointment" element={<Appointment />} />
               <Route path="create" element={<PrescriptionForm />} />
               <Route path="ChatRoom" element={<ChatRoom />} />
             </Routes>
