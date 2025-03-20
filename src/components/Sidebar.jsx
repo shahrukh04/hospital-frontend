@@ -23,6 +23,8 @@ import Doctors from "./Doctors";
 import PrescriptionList from "./PrescriptionList";
 import PrescriptionForm from "./PrescriptionForm";
 import Staff from "../Admin/Staff";
+import Bed from "../Admin/Bed";
+
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -104,13 +106,6 @@ const Sidebar = () => {
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Prescriptions</span>}
           </Link>
           <Link
-            to="/Sidebar/Room"
-            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
-          >
-            <DocumentTextIcon className="h-5 w-5 text-orange-500" />
-            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Room</span>}
-          </Link>
-          <Link
             to="/Sidebar/create"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
@@ -124,6 +119,13 @@ const Sidebar = () => {
             <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat</span>}
           </Link> */}
+          <Link
+            to="/Sidebar/Bed"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Bed</span>}
+          </Link>
           <Link
             to="/Sidebar/ChatRoom"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
@@ -215,6 +217,7 @@ const Sidebar = () => {
               <Route path="doctors" element={<Doctors />} />
               <Route path="PrescriptionList" element={<PrescriptionList />} />
               <Route path="create" element={<PrescriptionForm />} />
+              <Route path="Bed" element={<Bed />} />
               <Route path="ChatRoom" element={<ChatRoom />} />
               <Route path="Staff" element={<Staff/>} />
             </Routes>
