@@ -1,5 +1,30 @@
 import React, { useState } from "react";
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
+// Import icons from react-icons
+import { 
+  MdDashboard,
+  MdMedication,
+  MdPersonSearch,
+  MdAssignment,
+  MdAdd,
+  MdCalendarToday,
+  MdBed,
+  MdReceipt,
+  MdForum,
+  MdPieChart,
+  MdBarChart,
+  MdEmergency,
+  MdBiotech,
+  MdMonetizationOn,
+  MdScience,
+  MdPerson,
+  MdSpeed,
+  MdDescription,
+  MdMeetingRoom,
+  MdPeople,
+  MdChat,
+  MdSupervisorAccount
+} from 'react-icons/md';
 import {
   Squares2X2Icon,
   UserGroupIcon,
@@ -13,6 +38,19 @@ import {
   VideoCameraIcon,
   ArrowRightOnRectangleIcon,
   Cog6ToothIcon,
+  CalendarIcon, // Appointment
+  ChatBubbleBottomCenterTextIcon, // Consultation
+  ChartBarIcon, // DistributionStats
+  ExclamationTriangleIcon, // Emergency
+  WrenchScrewdriverIcon, // Equipment
+  BanknotesIcon, // FinancialStats
+  ChartPieIcon, // PerformanceMetrics
+  ClipboardDocumentCheckIcon, // Report
+  HomeModernIcon, // Room
+  UserIcon, // User
+  HeartIcon,
+  ChatBubbleLeftEllipsisIcon, // ChatRoom
+  UsersIcon // Staff
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import HeroSection from "./HeroSection";
@@ -25,6 +63,19 @@ import PrescriptionForm from "./PrescriptionForm";
 import Staff from "../Admin/Staff";
 import Appointment from "../Admin/Appointment";
 import Bed from "../Admin/Bed";
+import Bill from "../Admin/Bill";
+import Consultation from "../Admin/Consultation";
+import DemographicsStats from "../Admin/DemographicsStats";
+import DistributionStats from "../Admin/DistributionStats";
+import Emergency from "../Admin/Emergency";
+import Equipment from "../Admin/Equipment";
+import FinancialStats from "../Admin/FinancialStats";
+import LabTest from "../Admin/LabTest";
+import PerformanceMetrics from "../Admin/PerformanceMetrics";
+import Report from "../Admin/Report";
+import Room from "../Admin/Room";
+import User from "../Admin/User";
+import PatientModel from "../Admin/PatientModel";
 
 
 const Sidebar = () => {
@@ -77,40 +128,40 @@ const Sidebar = () => {
         </div>
 
         {/* Sidebar Navigation Links */}
-        <nav className="px-2 space-y-1 mt-4 flex-1 overflow-y-auto">
+        <nav className=" space-y-1 mt-4 flex-1 overflow-y-auto">
           <Link
             to="/Sidebar/dashboard"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <Squares2X2Icon className="h-5 w-5 text-blue-500" />
+            <MdDashboard className="h-5 w-5 text-blue-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Dashboard</span>}
           </Link>
           <Link
             to="/Sidebar/medicines"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <BeakerIcon className="h-5 w-5 text-green-500" />
+            <MdMedication className="h-5 w-5 text-green-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Medicines</span>}
           </Link>
           <Link
             to="/Sidebar/doctors"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <UserGroupIcon className="h-5 w-5 text-purple-500" />
+            <MdPersonSearch className="h-5 w-5 text-purple-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Doctors</span>}
           </Link>
           <Link
             to="/Sidebar/PrescriptionList"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <DocumentTextIcon className="h-5 w-5 text-orange-500" />
+            <MdAssignment className="h-5 w-5 text-orange-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Prescriptions</span>}
           </Link>
           <Link
             to="/Sidebar/create"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <PlusCircleIcon className="h-5 w-5 text-indigo-500" />
+            <MdAdd className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Create Prescription</span>}
           </Link>
 
@@ -126,28 +177,119 @@ const Sidebar = () => {
             to="/Sidebar/Bed"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            <MdBed color="#DB4437" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Bed</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Bill"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdReceipt className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Bill</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Consultation"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdForum className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Consultation</span>}
+          </Link>
+          <Link
+            to="/Sidebar/DemographicsStats"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdPieChart className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Demographics Stats</span>}
+          </Link>
+          <Link
+            to="/Sidebar/DistributionStats"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdBarChart className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Distribution Stats</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Emergency"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdEmergency className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Emergency</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Equipment"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdBiotech className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Equipment</span>}
+          </Link>
+          <Link
+            to="/Sidebar/FinancialStats"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdMonetizationOn className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Financial Stats</span>}
+          </Link>
+          <Link
+            to="/Sidebar/LabTest"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdScience className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Lab Test</span>}
+          </Link>
+          <Link
+            to="/Sidebar/patientModel"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdPerson className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">patient Model</span>}
+          </Link>
+          <Link
+            to="/Sidebar/PerformanceMetrics"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdSpeed className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Performance Metrics</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Report"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdDescription className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Report</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Room"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdMeetingRoom className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Room</span>}
+          </Link>
+          <Link
+            to="/Sidebar/User"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdPeople className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">User</span>}
           </Link>
           <Link
             to="/Sidebar/ChatRoom"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            <MdChat className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat Room</span>}
           </Link>
           <Link
             to="/Sidebar/Staff"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            <MdSupervisorAccount className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Staff</span>}
           </Link>
           <Link
             to="/Sidebar/Appointment"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            <MdCalendarToday className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Appointment</span>}
           </Link>
 
@@ -208,7 +350,6 @@ const Sidebar = () => {
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100 rounded"
                   >
-                      
                     Logout
                   </button>
                 </div>
@@ -228,10 +369,23 @@ const Sidebar = () => {
               <Route path="doctors" element={<Doctors />} />
               <Route path="PrescriptionList" element={<PrescriptionList />} />
               <Route path="create" element={<PrescriptionForm />} />
+              <Route path="Appointment" element={<Appointment />} />
               <Route path="Bed" element={<Bed />} />
+              <Route path="Bill" element={<Bill />} />
+              <Route path="Consultation" element={<Consultation />} />
+              <Route path="DemographicsStats" element={<DemographicsStats />} />
+              <Route path="DistributionStats" element={<DistributionStats />} />
+              <Route path="Emergency" element={<Emergency />} />
+              <Route path="Equipment" element={<Equipment />} />
+              <Route path="FinancialStats" element={<FinancialStats />} />
+              <Route path="LabTest" element={<LabTest />} />
+              <Route path="patientModel" element={<PatientModel />} />
+              <Route path="PerformanceMetrics" element={<PerformanceMetrics />} />
+              <Route path="Report" element={<Report />} />
+              <Route path="Room" element={<Room />} />
+              <Route path="User" element={<User />} />
               <Route path="ChatRoom" element={<ChatRoom />} />
               <Route path="Staff" element={<Staff/>} />
-              <Route path="Appointment" element={<Appointment />} />
             </Routes>
           </div>
         </main>
