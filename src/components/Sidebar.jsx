@@ -113,6 +113,13 @@ const Sidebar = () => {
             <PlusCircleIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Create Prescription</span>}
           </Link>
+          <Link
+            to="/Sidebar/Appointment"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <PlusCircleIcon className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Appointment</span>}
+          </Link>
           {/* <Link
             to="/Sidebar/Chat"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
@@ -207,6 +214,7 @@ const Sidebar = () => {
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100 rounded"
                   >
+                      
                     Logout
                   </button>
                 </div>
@@ -214,6 +222,7 @@ const Sidebar = () => {
             </div>
           </div>
         </header>
+    
 
         {/* Main Content Area */}
         <main className="flex-1 overflow-auto pt-16">
@@ -224,6 +233,7 @@ const Sidebar = () => {
               <Route path="medicines" element={<Medicines />} />
               <Route path="doctors" element={<Doctors />} />
               <Route path="PrescriptionList" element={<PrescriptionList />} />
+              <Route path="Appointment" element={<Appointment />} />
               <Route path="create" element={<PrescriptionForm />} />
               <Route path="Appointment" element={<Appointment />} />
               <Route path="Bed" element={<Bed />} />
@@ -232,7 +242,6 @@ const Sidebar = () => {
             </Routes>
           </div>
         </main>
-
       </div>
     </div>
   );
