@@ -165,6 +165,7 @@ const Staff = () => {
 
   // ✅ Handle form submission (add or edit staff)
   const handleSubmit = async (values) => {
+    debugger;
     try {
       
       if (editingStaffId) {
@@ -188,7 +189,7 @@ const Staff = () => {
   const handleEditStaff = async (staffId) => {
   
     try {
-      const response = await api.getStaff(staffId);
+      const response = await api.getStaffMember(staffId);
       setNewStaff(response.data);
       setEditingStaffId(staffId);
       setShowForm(true);
@@ -212,7 +213,7 @@ const Staff = () => {
       });
 
       if (result.isConfirmed) {
-        await api.deleteStaff(staffId);
+        await api.deleteStaffMember(staffId);
         toast.success("Staff deleted successfully!");
         getAllStaff(); // Refresh the list
       }
