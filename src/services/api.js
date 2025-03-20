@@ -131,14 +131,24 @@ export const api = {
   // Staff Management Endpoints
   getAllStaff: () => axios.get(`${BASE_URL}/staff`),
   getStaffMember: (id) => axios.get(`${BASE_URL}/staff/${id}`),
-  addStaffMember: (staff) => axios.post(`${BASE_URL}/staff`, staff),
+  addStaff: (staff) => axios.post(`${BASE_URL}/staff`, staff),
   updateStaffMember: (id, staff) => axios.put(`${BASE_URL}/staff/${id}`, staff),
   deleteStaffMember: (id) => axios.delete(`${BASE_URL}/staff/${id}`),
   getStaffAttendance: (month, year) => axios.get(`${BASE_URL}/staff/attendance/${year}/${month}`),
+  addStaffAttendance: (attendanceData) => axios.post(`${BASE_URL}/staff/attendance`, attendanceData),
+  getStaffAttendance: (staffId) => axios.get(`${BASE_URL}/staff/${staffId}/attendance`),
+  updateAttendance: (staffId, attendanceId, status) =>
+    axios.put(`${BASE_URL}/staff/${staffId}/attendance/${attendanceId}`, { status }),
+  deleteAttendance: (staffId, attendanceId) =>
+    axios.delete(`${BASE_URL}/staff/${staffId}/attendance/${attendanceId}`),
   recordStaffAttendance: (staffId, date, status) =>
-    axios.post(`${BASE_URL}/staff/${staffId}/attendance`, { date, status }),
-  getStaffSchedule: (staffId) => axios.get(`${BASE_URL}/staff/${staffId}/schedule`),
-  updateStaffSchedule: (staffId, schedule) => axios.put(`${BASE_URL}/staff/${staffId}/schedule`, schedule),
+    axios.post(`${BASE_URL}/staff/attendance`, { staffId, date, status }),
+  getStaffSchedule: (staffId) =>
+    axios.get(`${BASE_URL}/staff/${staffId}/schedule`),
+  // Update a staff member's schedule
+  updateStaffSchedule: (staffId, schedule) =>
+    axios.put(`${BASE_URL}/staff/${staffId}/schedule`, { schedule }),
+
 
   // Lab and Testing Endpoints
   getAllLabTests: () => axios.get(`${BASE_URL}/lab/tests`),

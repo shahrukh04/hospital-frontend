@@ -22,7 +22,13 @@ import Medicines from "./Medicines";
 import Doctors from "./Doctors";
 import PrescriptionList from "./PrescriptionList";
 import PrescriptionForm from "./PrescriptionForm";
+<<<<<<< HEAD
 import Appointment from "../Admin/Appointment";
+=======
+import Staff from "../Admin/Staff";
+import Bed from "../Admin/Bed";
+
+>>>>>>> 48e994a61cdf8a50a83e442aaacdb9e03176e809
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -125,11 +131,25 @@ const Sidebar = () => {
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat</span>}
           </Link> */}
           <Link
+            to="/Sidebar/Bed"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Bed</span>}
+          </Link>
+          <Link
             to="/Sidebar/ChatRoom"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
             <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat Room</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Staff"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Staff</span>}
           </Link>
 
 
@@ -211,7 +231,9 @@ const Sidebar = () => {
               <Route path="PrescriptionList" element={<PrescriptionList />} />
               <Route path="Appointment" element={<Appointment />} />
               <Route path="create" element={<PrescriptionForm />} />
+              <Route path="Bed" element={<Bed />} />
               <Route path="ChatRoom" element={<ChatRoom />} />
+              <Route path="Staff" element={<Staff/>} />
             </Routes>
           </div>
         </main>
