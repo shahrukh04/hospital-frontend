@@ -666,6 +666,7 @@ console.log(response.data);
   );
 };
  
+
 export default Medicines;
  
  
