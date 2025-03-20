@@ -133,35 +133,35 @@ const Sidebar = () => {
             to="/Sidebar/dashboard"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdDashboard className="h-5 w-5 text-blue-500" />
+            <MdDashboard color="#4285F4" className="h-5 w-5 text-blue-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Dashboard</span>}
           </Link>
           <Link
             to="/Sidebar/medicines"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdMedication className="h-5 w-5 text-green-500" />
+            <MdMedication color="#0F9D58" className="h-5 w-5 text-green-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Medicines</span>}
           </Link>
           <Link
             to="/Sidebar/doctors"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdPersonSearch className="h-5 w-5 text-purple-500" />
+            <MdPersonSearch color="#4285F4" className="h-5 w-5 text-purple-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Doctors</span>}
           </Link>
           <Link
             to="/Sidebar/PrescriptionList"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdAssignment className="h-5 w-5 text-orange-500" />
+            <MdAssignment color="#DB4437" className="h-5 w-5 text-orange-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Prescriptions</span>}
           </Link>
           <Link
             to="/Sidebar/create"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdAdd className="h-5 w-5 text-indigo-500" />
+            <MdAdd color="#0F9D58" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Create Prescription</span>}
           </Link>
 
@@ -177,119 +177,119 @@ const Sidebar = () => {
             to="/Sidebar/Bed"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdBed color="#DB4437" className="h-5 w-5 text-indigo-500" />
+            <MdBed color="#4285F4" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Bed</span>}
           </Link>
           <Link
             to="/Sidebar/Bill"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdReceipt className="h-5 w-5 text-indigo-500" />
+            <MdReceipt color="#DB4437" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Bill</span>}
           </Link>
           <Link
             to="/Sidebar/Consultation"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdForum className="h-5 w-5 text-indigo-500" />
+            <MdForum color="#0F9D58" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Consultation</span>}
           </Link>
           <Link
             to="/Sidebar/DemographicsStats"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdPieChart className="h-5 w-5 text-indigo-500" />
+            <MdPieChart color="#F4B400" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Demographics Stats</span>}
           </Link>
           <Link
             to="/Sidebar/DistributionStats"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdBarChart className="h-5 w-5 text-indigo-500" />
+            <MdBarChart color="#4285F4" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Distribution Stats</span>}
           </Link>
           <Link
             to="/Sidebar/Emergency"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdEmergency className="h-5 w-5 text-indigo-500" />
+            <MdEmergency color="#DB4437" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Emergency</span>}
           </Link>
           <Link
             to="/Sidebar/Equipment"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdBiotech className="h-5 w-5 text-indigo-500" />
+            <MdBiotech color="#0F9D58" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Equipment</span>}
           </Link>
           <Link
             to="/Sidebar/FinancialStats"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdMonetizationOn className="h-5 w-5 text-indigo-500" />
+            <MdMonetizationOn color="#F4B400" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Financial Stats</span>}
           </Link>
           <Link
             to="/Sidebar/LabTest"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdScience className="h-5 w-5 text-indigo-500" />
+            <MdScience color="#4285F4" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Lab Test</span>}
           </Link>
           <Link
             to="/Sidebar/patientModel"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdPerson className="h-5 w-5 text-indigo-500" />
+            <MdPerson color="#DB4437" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">patient Model</span>}
           </Link>
           <Link
             to="/Sidebar/PerformanceMetrics"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdSpeed className="h-5 w-5 text-indigo-500" />
+            <MdSpeed color="#0F9D58" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Performance Metrics</span>}
           </Link>
           <Link
             to="/Sidebar/Report"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdDescription className="h-5 w-5 text-indigo-500" />
+            <MdDescription color="#F4B400" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Report</span>}
           </Link>
           <Link
             to="/Sidebar/Room"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdMeetingRoom className="h-5 w-5 text-indigo-500" />
+            <MdMeetingRoom color="#4285F4" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Room</span>}
           </Link>
           <Link
             to="/Sidebar/User"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdPeople className="h-5 w-5 text-indigo-500" />
+            <MdPeople color="#DB4437" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">User</span>}
           </Link>
           <Link
             to="/Sidebar/ChatRoom"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdChat className="h-5 w-5 text-indigo-500" />
+            <MdChat color="#0F9D58" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat Room</span>}
           </Link>
           <Link
             to="/Sidebar/Staff"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdSupervisorAccount className="h-5 w-5 text-indigo-500" />
+            <MdSupervisorAccount color="#F4B400" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Staff</span>}
           </Link>
           <Link
             to="/Sidebar/Appointment"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
           >
-            <MdCalendarToday className="h-5 w-5 text-indigo-500" />
+            <MdCalendarToday color="#F4B400" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Appointment</span>}
           </Link>
 
