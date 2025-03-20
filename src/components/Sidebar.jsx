@@ -23,6 +23,7 @@ import Doctors from "./Doctors";
 import PrescriptionList from "./PrescriptionList";
 import PrescriptionForm from "./PrescriptionForm";
 import Staff from "../Admin/Staff";
+import Appointment from "../Admin/Appointment";
 import Bed from "../Admin/Bed";
 
 
@@ -119,6 +120,13 @@ const Sidebar = () => {
             <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Chat</span>}
           </Link> */}
+          <Link
+            to="/Sidebar/Appointment"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <ChatBubbleLeftRightIcon className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Appointment</span>}
+          </Link>
           <Link
             to="/Sidebar/Bed"
             className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
@@ -217,6 +225,7 @@ const Sidebar = () => {
               <Route path="doctors" element={<Doctors />} />
               <Route path="PrescriptionList" element={<PrescriptionList />} />
               <Route path="create" element={<PrescriptionForm />} />
+              <Route path="Appointment" element={<Appointment />} />
               <Route path="Bed" element={<Bed />} />
               <Route path="ChatRoom" element={<ChatRoom />} />
               <Route path="Staff" element={<Staff/>} />
