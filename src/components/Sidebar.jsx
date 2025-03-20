@@ -237,7 +237,6 @@ const Sidebar = () => {
             </Routes>
           </div>
         </main>
-
       </div>
     </div>
   );
