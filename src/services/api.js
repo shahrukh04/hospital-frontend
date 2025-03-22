@@ -66,7 +66,13 @@ export const api = {
   reorderMedicine: (id, quantity) => axios.post(`${BASE_URL}/medicines/${id}/reorder`, { quantity }),
 
   // Doctor Endpoints
-  getAllDoctors: () => axios.get(`${BASE_URL}/doctors`),
+  getAllDoctors: () =>
+    axios.get(`${BASE_URL}/doctors`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    }),
+
   getDoctor: (id) => axios.get(`${BASE_URL}/doctors/${id}`),
   addDoctor: (doctor) => axios.post(`${BASE_URL}/doctors`, doctor),
   updateDoctor: (id, doctor) => axios.put(`${BASE_URL}/doctors/${id}`, doctor),
@@ -99,19 +105,86 @@ export const api = {
   getCriticalPatients: () => axios.get(`${BASE_URL}/patients/critical`),
 
   // Appointment Endpoints
-  getAllAppointments: () => axios.get(`${BASE_URL}/appointments`),
-  getAppointment: (id) => axios.get(`${BASE_URL}/appointments/${id}`),
-  addAppointment: (appointment) => axios.post(`${BASE_URL}/appointments`, appointment),
-  updateAppointment: (id, appointment) => axios.put(`${BASE_URL}/appointments/${id}`, appointment),
-  deleteAppointment: (id) => axios.delete(`${BASE_URL}/appointments/${id}`),
-  getAppointmentsByDate: (date) => axios.get(`${BASE_URL}/appointments/date/${date}`),
-  getAppointmentsByDoctor: (doctorId) => axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`),
-  getAppointmentsByPatient: (patientId) => axios.get(`${BASE_URL}/appointments/patient/${patientId}`),
-  getTodaysAppointments: () => axios.get(`${BASE_URL}/appointments/today`),
-  getUpcomingAppointments: () => axios.get(`${BASE_URL}/appointments/upcoming`),
-  rescheduleAppointment: (id, newDate, newTime) =>
-  axios.put(`${BASE_URL}/appointments/${id}/reschedule`, { date: newDate, time: newTime }),
+ // Appointment Endpoints with consistent authentication
+getAllAppointments: (queryString = '') =>
+  axios.get(`${BASE_URL}/appointments${queryString ? `?${queryString}` : ''}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
 
+getAppointment: (id) =>
+  axios.get(`${BASE_URL}/appointments/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+addAppointment: (appointment) =>
+  axios.post(`${BASE_URL}/appointments`, appointment, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+updateAppointment: (id, appointment) =>
+  axios.put(`${BASE_URL}/appointments/${id}`, appointment, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+deleteAppointment: (id) =>
+  axios.delete(`${BASE_URL}/appointments/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+getAppointmentsByDate: (date) =>
+  axios.get(`${BASE_URL}/appointments/date/${date}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+getAppointmentsByDoctor: (doctorId) =>
+  axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+getAppointmentsByPatient: (patientId) =>
+  axios.get(`${BASE_URL}/appointments/patient/${patientId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+getTodaysAppointments: () =>
+  axios.get(`${BASE_URL}/appointments/today`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+getUpcomingAppointments: () =>
+  axios.get(`${BASE_URL}/appointments/upcoming`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }),
+
+rescheduleAppointment: (id, newDate, newTime) =>
+  axios.put(`${BASE_URL}/appointments/${id}/reschedule`,
+    { date: newDate, time: newTime },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    }
+  ),
   // Department Endpoints
 getAllDepartments: () => axios.get(`${BASE_URL}/departments`),
 getDepartment: (id) => axios.get(`${BASE_URL}/departments/${id}`),
