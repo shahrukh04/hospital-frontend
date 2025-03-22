@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
-import HeroSection from "./HeroSection";
-import Navbar from "./Navbar";
-import LoadingSpinner from "./LoadingSpinner";
-import ErrorAlert from "./ErrorAlert";
+import HeroSection from "../components/HeroSection";
+import Navbar from "../components/Navbar";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ErrorAlert from "../components/ErrorAlert";
 import { createAuthenticatedAPI, API_BASE_URL } from "../services/api";
 
 

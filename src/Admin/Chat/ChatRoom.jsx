@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import socket from "../../../services/socket";
+import socket from "../../services/socket";
 import axios from "axios";
 import { FaPaperPlane, FaUser, FaEllipsisV, FaSearch, FaArrowLeft, FaTimes } from "react-icons/fa";
-import { API_BASE_URL } from "../../../services/api";
+import { API_BASE_URL } from "../../services/api";
 
 const ChatRoom = () => {
     const [message, setMessage] = useState("");

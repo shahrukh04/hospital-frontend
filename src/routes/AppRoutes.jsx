@@ -7,7 +7,7 @@ import Contact from '../components/Contact';
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../Admin/Sidebar/Sidebar";
 import { AuthProvider } from "../context/AuthContext";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
