@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
-
+import { api } from "../services/api";
 const Appointment = () => {
   // State Management
   const [appointments, setAppointments] = useState([]);
@@ -41,28 +40,32 @@ const Appointment = () => {
     reason: "",
     priority: "medium",
     notes: "",
-    insurance: "",
   });
-
   // Fetch Patients
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get("/api/patients", {
-          params: { search: searchQuery },
-        });
-        console.log(object)
-        setPatients(response.data);
+        const response = await api.getAllPatients();
+
+        // Filter patients client-side
+        const filteredPatients = searchQuery
+          ? response.data.filter(patient =>
+              patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              patient.id.toString().includes(searchQuery)
+              // Add other fields to search as needed
+            )
+          : response.data;
+
+        console.log(filteredPatients);
+        setPatients(filteredPatients);
       } catch (error) {
         console.error("Error fetching patients:", error);
         toast.error("Failed to fetch patients");
       }
     };
 
-    if (searchQuery) {
-      fetchPatients();
-    }
-  }, [searchQuery]);
+    fetchPatients();
+  }, [searchQuery]); // Re-run when search query changes
 
   // Initial data fetch
   useEffect(() => {
@@ -75,51 +78,28 @@ const Appointment = () => {
   const fetchAppointments = async () => {
     setLoading(true);
     setError(null);
-debugger;
     try {
-      const queryParams = new URLSearchParams({
+      const queryString = new URLSearchParams({
         page: currentPage,
         limit: 10,
         ...Object.fromEntries(
           Object.entries(filters).filter(([_, value]) => value !== "")
         ),
-      });
+      }).toString();
 
-      const response = await axios.get(`/api/appointments?${queryParams}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
+      const response = await api.getAllAppointments(queryString);
       console.log("API Response:", response.data);
 
-      // Check if response.data is an array or if appointments are nested
       const appointmentsData = Array.isArray(response.data)
-        ? response.data // If response.data is an array, use it directly
-        : response.data.data; // If response.data is an object, access the data property
+        ? response.data
+        : response.data.data;
 
       if (!Array.isArray(appointmentsData)) {
         throw new Error("Expected an array of appointments but got something else.");
       }
 
-      // Populate insurance details for each appointment
-      const appointmentsWithInsurance = await Promise.all(
-        appointmentsData.map(async (appointment) => {
-          const populatedAppointment = await axios.get(
-            `/api/appointments/${appointment._id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-          return populatedAppointment.data;
-        })
-      );
+      setAppointments(appointmentsData);
 
-      setAppointments(appointmentsWithInsurance);
-
-      // Set total pages if available in the response
       if (response.data.totalPages) {
         setTotalPages(response.data.totalPages);
       }
@@ -131,15 +111,9 @@ debugger;
       setLoading(false);
     }
   };
-
   const fetchDoctors = async () => {
     try {
-      const response = await axios.get("/api/doctors", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
+      const response = await api.getAllDoctors();
       setDoctors(response.data);
     } catch (err) {
       console.error("Error fetching doctors:", err);
@@ -149,7 +123,7 @@ debugger;
 
   const fetchDepartments = async () => {
     try {
-      const response = await axios.get("/api/departments", {
+      const response = await api.getAllDepartments({
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -187,19 +161,43 @@ debugger;
     setError(null);
 
     try {
-      const response = await axios.post("/api/appointments", formData, {
+      // Find the selected patient from the patients list
+      const selectedPatient = patients.find(
+        (patient) => patient._id === formData.patientId
+      );
+
+      if (!selectedPatient) {
+        throw new Error("Selected patient not found.");
+      }
+
+      // Prepare the appointment data
+      const appointmentData = {
+        ...formData,
+        insuranceDetails: selectedPatient.insuranceDetails, // Automatically include insurance details
+      };
+
+      // Add the appointment via the API
+      const response = await api.addAppointment(appointmentData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      toast.success("Appointment created successfully");
-      setViewMode("list");
-      fetchAppointments();
+
+      // Handle success
+      if (response.data.success) {
+        toast.success("Appointment created successfully");
+        setViewMode("list");
+        fetchAppointments(); // Refresh the appointment list
+      } else {
+        throw new Error(response.data.message || "Failed to create appointment");
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to create appointment");
-      toast.error(err.response?.data?.message || "Failed to create appointment");
+      // Handle errors
+      const errorMessage = err.response?.data?.message || err.message || "Failed to create appointment";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -210,8 +208,8 @@ debugger;
     setError(null);
 
     try {
-      const response = await axios.put(
-        `/api/appointments/${selectedAppointment._id}`,
+      const response = await api.updateAppointment(
+      `${selectedAppointment._id}`,
         formData,
         {
           headers: {
@@ -232,8 +230,7 @@ debugger;
 
   const cancelAppointment = async (id, reason) => {
     try {
-      await axios.put(
-        `/api/appointments/${id}/cancel`,
+      await api.deleteAppointment(
         { cancellationReason: reason },
         {
           headers: {
@@ -312,7 +309,6 @@ debugger;
       reason: "",
       priority: "medium",
       notes: "",
-      insurance: "",
     });
     setSelectedAppointment(null);
   };
@@ -336,7 +332,7 @@ debugger;
       reason: appointment.reason,
       priority: appointment.priority,
       notes: appointment.notes || "",
-      insurance: appointment.insurance || "",
+      insurance: appointment.patient.insuranceDetails || {},
     });
     setViewMode("edit");
   };
@@ -498,116 +494,112 @@ debugger;
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {appointments.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan="6"
-                      className="px-6 py-4 text-center text-gray-500"
-                    >
-                      No appointments found
-                    </td>
-                  </tr>
-                ) : (
-                  appointments.map((appointment) => (
-
-                    <tr key={appointment._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-  {appointment.date && !isNaN(new Date(appointment.date).getTime())
-    ? format(new Date(appointment.date), "MMM d, yyyy")
-    : "Invalid Date"}
-</div>
-                        <div className="text-sm text-gray-500">
-                          {appointment.startTime} - {appointment.endTime}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {appointment.patientId?.name}{" "}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {appointment.doctorId?.name}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {appointment.doctorId?.specialization}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900 max-w-xs truncate">
-                          {appointment.reason}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-  <span
-    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-      ${
-        appointment.status === "scheduled"
-          ? "bg-yellow-100 text-yellow-800"
-          : ""
-      }
-      ${
-        appointment.status === "confirmed"
-          ? "bg-green-100 text-green-800"
-          : ""
-      }
-      ${
-        appointment.status === "completed"
-          ? "bg-blue-100 text-blue-800"
-          : ""
-      }
-      ${
-        appointment.status === "cancelled"
-          ? "bg-red-100 text-red-800"
-          : ""
-      }
-      ${
-        appointment.status === "no-show"
-          ? "bg-gray-100 text-gray-800"
-          : ""
-      }
-    `}
-  >
-    {appointment.status
-      ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)
-      : "Unknown"}
-  </span>
-</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-  <button
-    onClick={() => switchToViewMode(appointment)}
-    className="text-indigo-600 hover:text-indigo-900 mr-2"
-  >
-    View
-  </button>
-  {appointment.status !== "completed" && ( // <-- Fixed
-      <>
-        <button
-          onClick={() => switchToEditMode(appointment)}
-          className="text-green-600 hover:text-green-900 mr-2"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleCancelConfirm(appointment._id)}
-          className="text-red-600 hover:text-red-900 mr-2"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={() => sendReminder(appointment._id)}
-          className="text-blue-600 hover:text-blue-900"
-        >
-          Remind
-        </button>
-      </>
-    )}
-</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
+  {appointments.length === 0 ? (
+    <tr>
+      <td colSpan="6" className="px-6 py-4 text-center text-gray-500">
+        No appointments found
+      </td>
+    </tr>
+  ) : (
+    appointments.map((appointment) => (
+      <tr key={appointment._id} className="hover:bg-gray-50">
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">
+            {appointment.date && !isNaN(new Date(appointment.date).getTime())
+              ? format(new Date(appointment.date), "MMM d, yyyy")
+              : "Invalid Date"}
+          </div>
+          <div className="text-sm text-gray-500">
+            {appointment.time} {/* Assuming 'time' is the correct field */}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">
+            {appointment.patient?.name || "N/A"}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="text-sm font-medium text-gray-900">
+            {appointment.doctor?.name || "N/A"}
+          </div>
+          <div className="text-sm text-gray-500">
+            {appointment.doctor?.specialization || "N/A"}
+          </div>
+        </td>
+        <td className="px-6 py-4">
+          <div className="text-sm text-gray-900 max-w-xs truncate">
+            {appointment.reason || "N/A"} {/* Display the reason field */}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <span
+            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+              ${
+                appointment.status === "scheduled"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : ""
+              }
+              ${
+                appointment.status === "confirmed"
+                  ? "bg-green-100 text-green-800"
+                  : ""
+              }
+              ${
+                appointment.status === "completed"
+                  ? "bg-blue-100 text-blue-800"
+                  : ""
+              }
+              ${
+                appointment.status === "cancelled"
+                  ? "bg-red-100 text-red-800"
+                  : ""
+              }
+              ${
+                appointment.status === "no-show"
+                  ? "bg-gray-100 text-gray-800"
+                  : ""
+              }
+            `}
+          >
+            {appointment.status
+              ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)
+              : "Unknown"}
+          </span>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+          <button
+            onClick={() => switchToViewMode(appointment)}
+            className="text-indigo-600 hover:text-indigo-900 mr-2"
+          >
+            View
+          </button>
+          {appointment.status !== "completed" && (
+            <>
+              <button
+                onClick={() => switchToEditMode(appointment)}
+                className="text-green-600 hover:text-green-900 mr-2"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleCancelConfirm(appointment._id)}
+                className="text-red-600 hover:text-red-900 mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => sendReminder(appointment._id)}
+                className="text-blue-600 hover:text-blue-900"
+              >
+                Remind
+              </button>
+            </>
+          )}
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
             </table>
           </div>
 
@@ -730,34 +722,40 @@ debugger;
 
             {/* Patient Search and Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Patient
-              </label>
-              <input
-                type="text"
-                name="patientId"
-                value={formData.patientId}
-                onChange={handleFormChange}
-                className="w-full p-2 border rounded"
-                placeholder="Search Patient"
-                required
-              />
-              {patients.length > 0 && (
-                <ul className="mt-2 bg-white border rounded-lg shadow-md max-h-40 overflow-y-auto">
-                  {patients.map((patient) => (
-                    <li
-                      key={patient._id}
-                      onClick={() =>
-                        setFormData({ ...formData, patientId: patient._id })
-                      }
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                    >
-                      {patient.firstName} {patient.lastName} - {patient.phone}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">
+    Patient
+  </label>
+  <input
+    type="text"
+    name="patientId"
+    value={formData.patientId}
+    onChange={handleFormChange}
+    className="w-full p-2 border rounded"
+    placeholder="Search Patient"
+    required
+  />
+  {patients.length > 0 && (
+    <ul className="mt-2 bg-white border rounded-lg shadow-md max-h-40 overflow-y-auto">
+      {patients.map((patient) => (
+        <li
+          key={patient._id}
+          onClick={() => {
+            setFormData({
+              ...formData,
+              patientId: patient._id,
+              insuranceProvider: patient.insuranceDetails.provider,
+              insurancePolicyNumber: patient.insuranceDetails.policyNumber,
+              insuranceCoverage: patient.insuranceDetails.coverage,
+            });
+          }}
+          className="p-2 hover:bg-gray-100 cursor-pointer"
+        >
+          {patient.name} - {patient.phone}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
 
             {/* Appointment Type */}
             <div>
@@ -910,22 +908,6 @@ debugger;
                 <option value="urgent">Urgent</option>
               </select>
             </div>
-
-            {/* Insurance */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Insurance
-              </label>
-              <input
-                type="text"
-                name="insurance"
-                value={formData.insurance}
-                onChange={handleFormChange}
-                className="w-full p-2 border rounded"
-                placeholder="Insurance details"
-              />
-            </div>
-
             {/* Notes */}
             <div className="col-span-1 md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -1058,25 +1040,24 @@ debugger;
                 </h3>
                 <p className="text-gray-700 mb-2">
                   <span className="font-semibold">Name:</span>{" "}
-                  {selectedAppointment.patientId?.firstName}{" "}
-                  {selectedAppointment.patientId?.lastName}
+                  {selectedAppointment.patient?.name || "N/A"}
                 </p>
-                {selectedAppointment.patientId?.email && (
+                {selectedAppointment.patient?.email && (
                   <p className="text-gray-700 mb-2">
                     <span className="font-semibold">Email:</span>{" "}
-                    {selectedAppointment.patientId.email}
+                    {selectedAppointment.patient.email}
                   </p>
                 )}
-                {selectedAppointment.patientId?.phone && (
+                {selectedAppointment.patient?.phone && (
                   <p className="text-gray-700 mb-2">
                     <span className="font-semibold">Phone:</span>{" "}
-                    {selectedAppointment.patientId.phone}
+                    {selectedAppointment.patient.phone}
                   </p>
                 )}
-                {selectedAppointment.patientId?.insuranceDetails && (
+                {selectedAppointment.patient?.insuranceDetails && (
                   <p className="text-gray-700 mb-2">
                     <span className="font-semibold">Insurance Details:</span>{" "}
-                    {selectedAppointment.patientId.insuranceDetails}
+                    {JSON.stringify(selectedAppointment.patient.insuranceDetails)}
                   </p>
                 )}
               </div>
@@ -1088,19 +1069,18 @@ debugger;
                 </h3>
                 <p className="text-gray-700 mb-2">
                   <span className="font-semibold">Doctor:</span> Dr.{" "}
-                  {selectedAppointment.doctorId?.firstName}{" "}
-                  {selectedAppointment.doctorId?.lastName}
+                  {selectedAppointment.doctor?.name?.replace(/^Dr\.\s*/i, "") || "N/A"}
                 </p>
-                {selectedAppointment.doctorId?.specialization && (
+                {selectedAppointment.doctor?.specialization && (
                   <p className="text-gray-700 mb-2">
                     <span className="font-semibold">Specialization:</span>{" "}
-                    {selectedAppointment.doctorId.specialization}
+                    {selectedAppointment.doctor.specialization}
                   </p>
                 )}
-                {selectedAppointment.departmentId?.name && (
+                {selectedAppointment.department?.name && (
                   <p className="text-gray-700 mb-2">
                     <span className="font-semibold">Department:</span>{" "}
-                    {selectedAppointment.departmentId.name}
+                    {selectedAppointment.department.name}
                   </p>
                 )}
               </div>
@@ -1143,7 +1123,7 @@ debugger;
                     <span className="font-semibold">Reason for Visit:</span>
                   </p>
                   <p className="bg-gray-50 p-3 rounded">
-                    {selectedAppointment.reason}
+                    {selectedAppointment.reason || "N/A"}
                   </p>
                 </div>
 
