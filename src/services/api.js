@@ -47,7 +47,13 @@ const createAuthRequest = (token) => {
 };
 
 // API endpoints
+const getAuthToken = () => {
+  return localStorage.getItem('token'); // Retrieve token from localStorage
+};
+
 export const api = {
+
+  
   // Medicine Endpoints
   getAllMedicines: () => axios.get(`${BASE_URL}/medicines`),
   getMedicine: (id) => axios.get(`${BASE_URL}/medicines/${id}`),
@@ -167,14 +173,49 @@ getDepartmentsBySpecialty: (specialty) =>
     axios.put(`${BASE_URL}/staff/${staffId}/schedule`, { schedule }),
 
 
-  // Lab and Testing Endpoints
-  getAllLabTests: () => axios.get(`${BASE_URL}/lab/tests`),
-  getLabTest: (id) => axios.get(`${BASE_URL}/lab/tests/${id}`),
-  orderLabTest: (patientId, testDetails) => axios.post(`${BASE_URL}/lab/tests/order`, { patientId, ...testDetails }),
-  updateLabTestStatus: (testId, status, results) =>
-    axios.put(`${BASE_URL}/lab/tests/${testId}/status`, { status, results }),
-  getPatientLabResults: (patientId) => axios.get(`${BASE_URL}/lab/results/patient/${patientId}`),
-
+  getAllLabTests: () => axios.get(`${BASE_URL}/labs`, {
+    headers: {
+      'Authorization': `Bearer ${getAuthToken()}`
+    }
+  }),
+  
+  getLabTest: (id) => axios.get(`${BASE_URL}/labs/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${getAuthToken()}`
+    }
+  }),
+  
+  orderLabTest: (testDetails) => axios.post(`${BASE_URL}/labs`, testDetails, {
+    headers: {
+      'Authorization': `Bearer ${getAuthToken()}`
+    }
+  }),
+  
+  updateLabTestStatus: (testId, status, results) => 
+    axios.put(`${BASE_URL}/labs/${testId}`, { status, results }, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    }),
+  
+  deleteLabTest: (testId) => axios.delete(`${BASE_URL}/labs/${testId}`, {
+    headers: {
+      'Authorization': `Bearer ${getAuthToken()}`
+      }
+  }),
+  
+  getLabStats: () => axios.get(`${BASE_URL}/labs`, {
+    headers: {
+      'Authorization': `Bearer ${getAuthToken()}`
+    }
+  }),
+  
+  getPatientLabResults: (patientId) =>
+    axios.get(`${BASE_URL}/labs?patientId=${patientId}`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    }),
   // Analytics and Reports Endpoints
   getMonthlyStats: () => axios.get(`${BASE_URL}/stats/monthly`),
   getDistributionData: () => axios.get(`${BASE_URL}/stats/distribution`),
