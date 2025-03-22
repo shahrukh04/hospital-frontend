@@ -16,6 +16,8 @@ const Appointment = () => {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [patients, setPatients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [patientSearchQuery, setPatientSearchQuery] = useState("");
+  const [showPatientDropdown, setShowPatientDropdown] = useState(false);
 
   // Filter/Search State
   const [filters, setFilters] = useState({
@@ -48,11 +50,10 @@ const Appointment = () => {
         const response = await api.getAllPatients();
 
         // Filter patients client-side
-        const filteredPatients = searchQuery
+        const filteredPatients = patientSearchQuery
           ? response.data.filter(patient =>
-              patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              patient.id.toString().includes(searchQuery)
-              // Add other fields to search as needed
+              patient.name.toLowerCase().includes(patientSearchQuery.toLowerCase()) ||
+              (patient.id && patient.id.toString().includes(patientSearchQuery))
             )
           : response.data;
 
@@ -65,7 +66,7 @@ const Appointment = () => {
     };
 
     fetchPatients();
-  }, [searchQuery]); // Re-run when search query changes
+  }, [patientSearchQuery]); // Re-run when search query changes
 
   // Initial data fetch
   useEffect(() => {
@@ -228,41 +229,33 @@ const Appointment = () => {
     }
   };
 
-  const cancelAppointment = async (id, reason) => {
-    try {
-      await api.deleteAppointment(
-        { cancellationReason: reason },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      toast.success("Appointment cancelled successfully");
-      fetchAppointments();
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to cancel appointment");
+ // Fix the cancelAppointment function
+ const cancelAppointment = async (id, reason) => {
+  try {
+    // Check if reason is provided
+    if (!reason) {
+      toast.error("Cancellation reason is required");
+      return;
     }
-  };
 
-  const sendReminder = async (id) => {
-    try {
-      await axios.post(
-        `/api/appointments/${id}/reminder`,
-        { type: "email" }, // Could also be 'sms'
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+    // Call the correct API endpoint with the reason
+    await api.cancelAppointment(id, reason);
 
-      toast.success("Reminder sent successfully");
-    } catch (err) {
-      toast.error("Failed to send reminder");
-    }
-  };
+    toast.success("Appointment cancelled successfully");
+    fetchAppointments();
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Failed to cancel appointment");
+  }
+};
+
+const sendReminder = async (id) => {
+  try {
+    await api.sendAppointmentReminder(id);
+    toast.success("Appointment reminder sent successfully");
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Failed to send reminder");
+  }
+};
 
   // Event Handlers
   const handleFilterChange = (e) => {
@@ -342,6 +335,18 @@ const Appointment = () => {
     setViewMode("view");
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showPatientDropdown && !event.target.closest('.patient-search-container')) {
+        setShowPatientDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showPatientDropdown]);
   // Render different views
   const renderList = () => (
     <div className="container mx-auto p-4">
@@ -721,39 +726,57 @@ const Appointment = () => {
             </div>
 
             {/* Patient Search and Selection */}
-            <div>
+            <div className="patient-search-container">
   <label className="block text-sm font-medium text-gray-700 mb-1">
     Patient
   </label>
-  <input
-    type="text"
-    name="patientId"
-    value={formData.patientId}
-    onChange={handleFormChange}
-    className="w-full p-2 border rounded"
-    placeholder="Search Patient"
-    required
-  />
-  {patients.length > 0 && (
-    <ul className="mt-2 bg-white border rounded-lg shadow-md max-h-40 overflow-y-auto">
-      {patients.map((patient) => (
-        <li
-          key={patient._id}
-          onClick={() => {
-            setFormData({
-              ...formData,
-              patientId: patient._id,
-              insuranceProvider: patient.insuranceDetails.provider,
-              insurancePolicyNumber: patient.insuranceDetails.policyNumber,
-              insuranceCoverage: patient.insuranceDetails.coverage,
-            });
-          }}
-          className="p-2 hover:bg-gray-100 cursor-pointer"
-        >
-          {patient.name} - {patient.phone}
-        </li>
-      ))}
-    </ul>
+  <div className="relative">
+    <input
+      type="text"
+      value={patientSearchQuery}
+      onChange={(e) => {
+        setPatientSearchQuery(e.target.value);
+        setShowPatientDropdown(true);
+      }}
+      onFocus={() => setShowPatientDropdown(true)}
+      className="w-full p-2 border rounded"
+      placeholder="Search patient by name or ID"
+    />
+    {showPatientDropdown && patients.length > 0 && (
+      <ul className="absolute z-10 mt-1 w-full bg-white border rounded-lg shadow-md max-h-40 overflow-y-auto">
+        {patients.map((patient) => (
+          <li
+            key={patient._id}
+            onClick={() => {
+              setFormData({
+                ...formData,
+                patientId: patient._id,
+                insuranceProvider: patient.insuranceDetails?.provider || "",
+                insurancePolicyNumber: patient.insuranceDetails?.policyNumber || "",
+                insuranceCoverage: patient.insuranceDetails?.coverage || "",
+              });
+              setPatientSearchQuery(patient.name); // Update the search field with patient name
+              setShowPatientDropdown(false); // Hide dropdown after selection
+            }}
+            className="p-2 hover:bg-gray-100 cursor-pointer"
+          >
+            {patient.name} - {patient.phone || "No Phone"}
+          </li>
+        ))}
+      </ul>
+    )}
+    {showPatientDropdown && patients.length === 0 && patientSearchQuery && (
+      <div className="absolute z-10 mt-1 w-full bg-white border rounded-lg shadow-md p-2 text-gray-500">
+        No patients found
+      </div>
+    )}
+  </div>
+  {formData.patientId && (
+    <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded">
+      <p className="text-sm text-blue-800">
+        Selected: {patients.find(p => p._id === formData.patientId)?.name || "Patient"}
+      </p>
+    </div>
   )}
 </div>
 

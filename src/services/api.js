@@ -134,6 +134,17 @@ updateAppointment: (id, appointment) =>
     }
   }),
 
+  cancelAppointment: (id, cancellationReason) =>
+    axios.put(
+      `${BASE_URL}/appointments/${id}/cancel`,
+      { cancellationReason },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    ),
+
 deleteAppointment: (id) =>
   axios.delete(`${BASE_URL}/appointments/${id}`, {
     headers: {
@@ -185,6 +196,17 @@ rescheduleAppointment: (id, newDate, newTime) =>
       }
     }
   ),
+
+  sendAppointmentReminder: (id, reminderData = {}) =>
+    axios.post(
+      `${BASE_URL}/appointments/${id}/reminder`,
+      reminderData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    ),
   // Department Endpoints
 getAllDepartments: () => axios.get(`${BASE_URL}/departments`),
 getDepartment: (id) => axios.get(`${BASE_URL}/departments/${id}`),
