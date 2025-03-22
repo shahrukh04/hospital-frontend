@@ -23,34 +23,15 @@ import {
   MdMeetingRoom,
   MdPeople,
   MdChat,
-  MdSupervisorAccount
+  MdSupervisorAccount,
+  MdHome,
 } from 'react-icons/md';
 import {
-  Squares2X2Icon,
-  UserGroupIcon,
-  DocumentTextIcon,
-  PlusCircleIcon,
-  BeakerIcon,
   Bars3Icon,
   XMarkIcon,
   UserCircleIcon,
-  ChatBubbleLeftRightIcon,
-  VideoCameraIcon,
   ArrowRightOnRectangleIcon,
   Cog6ToothIcon,
-  CalendarIcon, // Appointment
-  ChatBubbleBottomCenterTextIcon, // Consultation
-  ChartBarIcon, // DistributionStats
-  ExclamationTriangleIcon, // Emergency
-  WrenchScrewdriverIcon, // Equipment
-  BanknotesIcon, // FinancialStats
-  ChartPieIcon, // PerformanceMetrics
-  ClipboardDocumentCheckIcon, // Report
-  HomeModernIcon, // Room
-  UserIcon, // User
-  HeartIcon,
-  ChatBubbleLeftEllipsisIcon, // ChatRoom
-  UsersIcon // Staff
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import HeroSection from "./HeroSection";
@@ -76,6 +57,7 @@ import Report from "../Admin/Report";
 import Room from "../Admin/Room";
 import User from "../Admin/User";
 import PatientModel from "../Admin/PatientModel";
+import Department from "@/Admin/Department";
 
 
 const Sidebar = () => {
@@ -200,6 +182,13 @@ const Sidebar = () => {
           >
             <MdPieChart color="#F4B400" className="h-5 w-5 text-indigo-500" />
             {isSidebarOpen && <span className="ml-3 text-sm font-medium">Demographics Stats</span>}
+          </Link>
+          <Link
+            to="/Sidebar/Department"
+            className="flex items-center px-4 py-3 text-gray-700 transition-all duration-200 rounded-xl hover:bg-gray-100 group no-underline"
+          >
+            <MdHome color="#DB4437" className="h-5 w-5 text-indigo-500" />
+            {isSidebarOpen && <span className="ml-3 text-sm font-medium">Department</span>}
           </Link>
           <Link
             to="/Sidebar/DistributionStats"
@@ -374,6 +363,7 @@ const Sidebar = () => {
               <Route path="Bill" element={<Bill />} />
               <Route path="Consultation" element={<Consultation />} />
               <Route path="DemographicsStats" element={<DemographicsStats />} />
+              <Route path="Department" element={<Department />} />
               <Route path="DistributionStats" element={<DistributionStats />} />
               <Route path="Emergency" element={<Emergency />} />
               <Route path="Equipment" element={<Equipment />} />
