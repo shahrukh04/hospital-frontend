@@ -106,6 +106,23 @@ export const api = {
   rescheduleAppointment: (id, newDate, newTime) =>
   axios.put(`${BASE_URL}/appointments/${id}/reschedule`, { date: newDate, time: newTime }),
 
+  // Department Endpoints
+getAllDepartments: () => axios.get(`${BASE_URL}/departments`),
+getDepartment: (id) => axios.get(`${BASE_URL}/departments/${id}`),
+addDepartment: (department) => axios.post(`${BASE_URL}/departments`, department),
+updateDepartment: (id, department) => axios.put(`${BASE_URL}/departments/${id}`, department),
+deleteDepartment: (id) => axios.delete(`${BASE_URL}/departments/${id}`),
+getDepartmentCount: () => axios.get(`${BASE_URL}/departments/count`),
+getActiveDepartments: () => axios.get(`${BASE_URL}/departments/active`),
+getDepartmentByName: (name) => axios.get(`${BASE_URL}/departments?name=${name}`),
+updateDepartmentHead: (id, headInfo) =>
+  axios.put(`${BASE_URL}/departments/${id}/head`, headInfo),
+updateDepartmentBudget: (id, budgetInfo) =>
+  axios.put(`${BASE_URL}/departments/${id}/budget`, budgetInfo),
+getDepartmentSpecialties: () => axios.get(`${BASE_URL}/departments/specialties`),
+getDepartmentsBySpecialty: (specialty) =>
+  axios.get(`${BASE_URL}/departments/specialty/${specialty}`),
+
   // Billing and Payments Endpoints
   getAllBills: () => axios.get(`${BASE_URL}/billing`),
   getBill: (id) => axios.get(`${BASE_URL}/billing/${id}`),
